@@ -1,0 +1,61 @@
+{
+  "C": 30,
+  "threshold_rule": "max F1 on val",
+  "sklearn": "1.9.1",
+  "train_sha256": "002374451f0a6579b7e7844af8db44ede6153801c3bdfa2c58370d69fa1023cf",
+  "trained_on": "train.csv only",
+  "metrics": {
+    "val@0.5": {
+      "split": "val@0.5",
+      "n": 774,
+      "threshold": 0.5,
+      "precision": 0.9762,
+      "recall": 0.8542,
+      "f1": 0.9111,
+      "pr_auc": 0.9553,
+      "roc_auc": 0.9833,
+      "brier": 0.018,
+      "confusion": {
+        "tn": 676,
+        "fp": 2,
+        "fn": 14,
+        "tp": 82
+      }
+    },
+    "val": {
+      "split": "val",
+      "n": 774,
+      "threshold": 0.353,
+      "precision": 0.9655,
+      "recall": 0.875,
+      "f1": 0.918,
+      "pr_auc": 0.9553,
+      "roc_auc": 0.9833,
+      "brier": 0.018,
+      "confusion": {
+        "tn": 675,
+        "fp": 3,
+        "fn": 12,
+        "tp": 84
+      }
+    },
+    "test": {
+      "split": "test",
+      "n": 774,
+      "threshold": 0.353,
+      "precision": 0.9896,
+      "recall": 0.9896,
+      "f1": 0.9896,
+      "pr_auc": 0.9981,
+      "roc_auc": 0.9997,
+      "brier": 0.0063,
+      "confusion": {
+        "tn": 677,
+        "fp": 1,
+        "fn": 1,
+        "tp": 95
+      }
+    }
+  },
+  "note": "test evaluated twice: once with phonetok/shortcodetok model (F1 0.957), once with this model after the OOD-motivated token collapse"
+}

@@ -1,0 +1,33 @@
+{
+  "source": "kaggle:uciml/sms-spam-collection-dataset (spam.csv)",
+  "raw_sha256": "440e6ea9fa825578abfdd7b7932ef8393d72ef86c0c33f64676705ce40b1dfc2",
+  "seed": 42,
+  "near_duplicate_threshold": 0.8,
+  "raw_rows": 5572,
+  "exact_duplicates_removed": 414,
+  "texts_with_conflicting_labels": 0,
+  "rows_after_dedup": 5158,
+  "template_groups": 4966,
+  "groups_with_multiple_members": 135,
+  "rows_in_multi_member_groups": 327,
+  "splits": {
+    "train": {
+      "rows": 3610,
+      "spam": 450,
+      "spam_ratio": 0.1247,
+      "sha256": "002374451f0a6579b7e7844af8db44ede6153801c3bdfa2c58370d69fa1023cf"
+    },
+    "val": {
+      "rows": 774,
+      "spam": 96,
+      "spam_ratio": 0.124,
+      "sha256": "9cceab4c0de148597bb32dd6a4afdac413e9000f7d583984bdd06e232ef10411"
+    },
+    "test": {
+      "rows": 774,
+      "spam": 96,
+      "spam_ratio": 0.124,
+      "sha256": "19abc64a6f89a887c3a475cc34ccdaa45ae50007a4563b0ee21d776316b15780"
+    }
+  }
+}

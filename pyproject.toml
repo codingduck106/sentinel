@@ -1,0 +1,20 @@
+[project]
+name = "veritas"
+version = "0.3.0"
+requires-python = ">=3.12"
+# Runtime dependencies only (these ship in the Vercel Python function).
+# scikit-learn is pinned exactly: models/spam_lr.joblib must be loaded by the version that saved it.
+dependencies = [
+    "fastapi==0.162.7",
+    "scikit-learn==1.9.1",
+    "joblib==1.6.0",
+    "numpy==2.5.4",
+    "anthropic==2.8.0",  # opt-in /api/contextual only; imported lazily
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["veritas*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

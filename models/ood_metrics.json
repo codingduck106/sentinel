@@ -1,0 +1,99 @@
+{
+  "india_classifier": {
+    "n": 19230,
+    "spam": 5558,
+    "pr_auc": 0.5803,
+    "roc_auc": 0.7916,
+    "precision@thr": 0.5314,
+    "recall@thr": 0.7787,
+    "ham_fpr@thr": 0.2792
+  },
+  "india_tactics": {
+    "spam_%": {
+      "urgency": 47.5,
+      "fear": 19.6,
+      "authority_impersonation": 4.6,
+      "reward": 29.6,
+      "any": 56.7,
+      "ge2": 40.0
+    },
+    "ham_%": {
+      "urgency": 0.0,
+      "fear": 3.6,
+      "authority_impersonation": 2.3,
+      "reward": 8.7,
+      "any": 14.6,
+      "ge2": 0.0
+    }
+  },
+  "india_or_rule(classifier OR >=2 tactics)": {
+    "recall": 0.8285,
+    "ham_fpr": 0.2793
+  },
+  "dialogue_tactics_%_by_type": [
+    {
+      "label": 0,
+      "type": "delivery",
+      "urgency": 0.5,
+      "fear": 0.0,
+      "authority_impersonation": 4.5,
+      "reward": 2.5
+    },
+    {
+      "label": 0,
+      "type": "insurance",
+      "urgency": 17.0,
+      "fear": 0.5,
+      "authority_impersonation": 9.0,
+      "reward": 13.5
+    },
+    {
+      "label": 0,
+      "type": "telemarketing",
+      "urgency": 19.0,
+      "fear": 1.5,
+      "authority_impersonation": 6.0,
+      "reward": 17.0
+    },
+    {
+      "label": 0,
+      "type": "wrong",
+      "urgency": 0.0,
+      "fear": 0.0,
+      "authority_impersonation": 0.0,
+      "reward": 0.0
+    },
+    {
+      "label": 1,
+      "type": "refund",
+      "urgency": 59.0,
+      "fear": 32.0,
+      "authority_impersonation": 99.5,
+      "reward": 99.5
+    },
+    {
+      "label": 1,
+      "type": "reward",
+      "urgency": 59.3,
+      "fear": 0.5,
+      "authority_impersonation": 67.8,
+      "reward": 100.0
+    },
+    {
+      "label": 1,
+      "type": "ssn",
+      "urgency": 90.5,
+      "fear": 95.0,
+      "authority_impersonation": 29.5,
+      "reward": 5.5
+    },
+    {
+      "label": 1,
+      "type": "support",
+      "urgency": 23.5,
+      "fear": 25.5,
+      "authority_impersonation": 29.0,
+      "reward": 5.0
+    }
+  ]
+}
