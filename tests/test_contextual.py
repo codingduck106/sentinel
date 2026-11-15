@@ -145,6 +145,8 @@ def test_short_sensitive_codes_are_redacted(api, enabled, monkeypatch):
     sent = fake.calls[0]["messages"][0]["content"]
     assert "123" not in sent and "456" not in sent and "789" not in sent
     assert sent.count("[number]") == 3
+    # the label stays, so the model still knows *what* is being requested
+    assert "CVV [number]" in sent and "PIN: [number]" in sent and "Verification code [number]" in sent
 
 
 def test_message_is_structurally_encoded_as_untrusted_data(api, enabled, monkeypatch):
@@ -261,3 +263,13 @@ def test_spend_guard_never_overshoots():
     assert g.reserve(0.6) and not g.reserve(0.6)
     g.settle(0.6, 0.1)
     assert g.reserve(0.6) and abs(g.spent - 0.7) < 1e-9
+
+
+def test_missing_sdk_degrades_gracefully_without_holding_budget(api, enabled, monkeypatch):
+    """Regression: production once shipped without the anthropic package. That must give a
+    graceful 'unavailable' (not a 500) and must not leave a budget reservation behind."""
+    import sys
+    monkeypatch.setitem(sys.modules, "anthropic", None)  # makes `import anthropic` raise ImportError
+    r = post(api)
+    assert r.status_code == 200 and r.json() == {"status": "unavailable", "reason": "error"}
+    assert ctx.guard().spent == 0.0

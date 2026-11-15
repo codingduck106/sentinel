@@ -102,7 +102,7 @@ API_SCHEMA = _api_schema()
 _REDACTIONS = [
     (re.compile(r"\b[\w.+-]+@[\w-]+\.[\w.-]+\b"), "[email]"),
     (re.compile(r"\+?\d[\d\s-]{6,}\d"), "[number]"),   # phone/account-like runs, incl. spaced
-    (re.compile(r"(?i)\b(?:cvv|cvc|pin|otp|passcode|security code|verification code)\s*[:#-]?\s*\d{3,8}\b"), "[number]"),
+    (re.compile(r"(?i)\b(cvv|cvc|pin|otp|passcode|security code|verification code)(\s*[:#-]?\s*)\d{3,8}\b"), r"\1\2[number]"),
     (re.compile(r"\d{4,}"), "[number]"),               # codes, account fragments, order numbers
 ]
 
@@ -224,12 +224,15 @@ def analyze_context(text: str) -> dict:
     s = settings()
     if not s.enabled:
         return unavailable("disabled")
+    try:
+        import anthropic  # only reached when enabled; imported before any budget is reserved
+    except ImportError:
+        return unavailable("error")
     g = guard()
     reserve = s.worst_case_cost
     if not g.reserve(reserve):
         return unavailable("daily_limit")
 
-    import anthropic  # only reached when enabled
     sent = redact(text)
     actual = 0.0
     try:
