@@ -134,7 +134,7 @@ All of the following were verified against the live production deployment on 202
   - **Vercel request logs:** they record only method and path.
 - **XSS:** user text is only ever rendered as text, never as HTML; an end-to-end test covers this.
 - **Headers:** CSP, `nosniff`, `X-Frame-Options: DENY`, Referrer-Policy and Permissions-Policy. API responses are `no-store`. CORS is closed by default.
-- **Rate limit:** the Vercel Firewall rule "Rate limit message checks" covers `POST /api/analyze`, 30 per minute per IP, returning 429. The UI turns 429 into "Too many checks… wait a minute". A separate unpublished rule for `POST /api/contextual` is staged in [`docs/vercel-firewall-contextual.md`](docs/vercel-firewall-contextual.md), at 10 per minute per IP.
+- **Rate limit:** the Vercel Firewall rule "Rate limit message checks" covers `POST /api/analyze`, 30 per minute per IP, returning 429. The UI turns 429 into "Too many checks… wait a minute". The current Vercel plan does not support a separate firewall rate limit for `POST /api/contextual`; its application budget is per instance, not a global spending ceiling.
   - **Publishing:** the CLI only publishes it with a person's confirmation (`vercel firewall publish`).
   - **Testing note:** once it's live, running the full Playwright suite against production from one IP sends over 30 checks a minute and will trip it. Run one project at a time (`--project desktop`) or wait between runs.
 - **Model file:** `models/spam_lr.joblib` is a pickle, so only load model files you built yourself.

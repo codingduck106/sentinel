@@ -90,7 +90,7 @@ Settings (env vars): `VERITAS_LLM_ENABLED=1`, `ANTHROPIC_API_KEY` (workspace-sco
 
 **Open items before deploying:**
 1. **UX decision:** the AI card can contradict the rating. For example, the "Hi Mum" scam is rated Low by the rules while the AI explains it's a scam. The user must decide whether that's acceptable.
-2. **Rate limit for `/api/contextual`:** the separate 10/min/IP rule is documented in `docs/vercel-firewall-contextual.md`; it remains unpublished. The existing rule covers only `POST /api/analyze`.
+2. **Rate limit for `/api/contextual`:** the current Vercel plan does not support a separate firewall rate limit, so this endpoint has no external rate limit. The existing rule covers only `POST /api/analyze`.
 3. **Vercel env vars:** set them (the user adds the key) and set the Anthropic workspace spend limit.
 4. **Deploy and verify:** deploy, then rerun the E2E suite against prod.
 
