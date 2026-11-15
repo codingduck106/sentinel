@@ -19,7 +19,7 @@ from sklearn.metrics import (average_precision_score, brier_score_loss, confusio
                              roc_auc_score)
 
 sys.path.insert(0, str(Path(__file__).parent))
-from veritas.classifier import DEFAULT_MODEL, SpamClassifier, build_pipeline  # noqa: E402
+from sentinel.classifier import DEFAULT_MODEL, SpamClassifier, build_pipeline  # noqa: E402
 
 DATA = Path("data/processed")
 

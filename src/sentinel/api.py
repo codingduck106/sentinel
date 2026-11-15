@@ -1,6 +1,6 @@
 """HTTP API: User input -> analyze() -> JSON for the results dashboard.
 
-Run locally:  uvicorn veritas.api:app --reload --port 8000
+Run locally:  uvicorn sentinel.api:app --reload --port 8000
 """
 from __future__ import annotations
 
@@ -13,17 +13,18 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from pydantic import BaseModel, Field, field_validator
 
-from veritas.analyze import analyze
-from veritas.explain import GENERAL_ADVICE, TACTIC_INFO, VERDICTS, risk_level, risk_score
-from veritas.tactics import TACTICS
+from sentinel.analyze import analyze
+from sentinel.settings import env
+from sentinel.explain import GENERAL_ADVICE, TACTIC_INFO, VERDICTS, risk_level, risk_score
+from sentinel.tactics import TACTICS
 
 MAX_CHARS = 2000  # code points; the frontend counts the same way ([...text].length)
 
 # Every detector needs plain-language copy, or every request would fail with a KeyError.
 assert set(TACTICS) == set(TACTIC_INFO), f"tactics/explain mismatch: {set(TACTICS) ^ set(TACTIC_INFO)}"
 
-# Interactive docs are off unless explicitly enabled (e.g. locally): VERITAS_ENABLE_DOCS=1
-_docs = os.environ.get("VERITAS_ENABLE_DOCS") == "1"
+# Interactive docs are off unless explicitly enabled (e.g. locally): SENTINEL_ENABLE_DOCS=1
+_docs = env("ENABLE_DOCS") == "1"
 app = FastAPI(
     title="Veritas API", version="0.3.0",
     docs_url="/api/docs" if _docs else None, redoc_url=None,
@@ -68,8 +69,8 @@ async def unexpected_error(_: Request, __: Exception) -> JSONResponse:
 
 
 # The frontend calls the API same-origin (Vercel services; Next dev proxy locally), so CORS is
-# closed by default. Allow-list other origins only if you really need them: VERITAS_CORS_ORIGINS=a,b
-_origins = [o.strip() for o in os.environ.get("VERITAS_CORS_ORIGINS", "").split(",") if o.strip()]
+# closed by default. Allow-list other origins only if you really need them: SENTINEL_CORS_ORIGINS=a,b
+_origins = [o.strip() for o in (env("CORS_ORIGINS") or "").split(",") if o.strip()]
 if _origins:
     app.add_middleware(CORSMiddleware, allow_origins=_origins, allow_methods=["POST", "GET"], allow_headers=["content-type"])
 
@@ -128,7 +129,7 @@ class ContextualRequest(AnalyzeRequest):
 
 @app.post("/api/contextual")
 def contextual_endpoint(req: ContextualRequest) -> JSONResponse:
-    from veritas.contextual import analyze_context  # lazy: keeps /api/analyze free of the LLM dependency
+    from sentinel.contextual import analyze_context  # lazy: keeps /api/analyze free of the LLM dependency
 
     if req.consent is not True:
         return JSONResponse({"error": "Turn on the AI explanation to use this."}, status_code=400)

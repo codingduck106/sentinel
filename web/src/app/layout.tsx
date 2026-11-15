@@ -1,25 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Atkinson_Hyperlegible, Bricolage_Grotesque } from "next/font/google";
+import { Atkinson_Hyperlegible, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const bricolage = Bricolage_Grotesque({ variable: "--font-bricolage", subsets: ["latin"], weight: ["600", "700", "800"] });
+const mono = JetBrains_Mono({ variable: "--font-mono", subsets: ["latin"], weight: ["400", "700", "800"] });
 const atkinson = Atkinson_Hyperlegible({ variable: "--font-atkinson", subsets: ["latin"], weight: ["400", "700"] });
 
 export const metadata: Metadata = {
-  title: "Veritas — Is this text a scam?",
-  description: "Paste a suspicious text message. Veritas shows the exact words trying to rush, scare or bribe you, and what to do next.",
+  title: "Sentinel — Scam text checker",
+  description: "Check if a text message is a scam. Paste it and Sentinel flags the exact words trying to rush, scare or bribe you, gives a risk level, and tells you what to do next.",
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#eef1f4" },
-    { media: "(prefers-color-scheme: dark)", color: "#141a24" },
-  ],
+  themeColor: "#040705",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${bricolage.variable} ${atkinson.variable}`}>
+    <html lang="en" className={`${mono.variable} ${atkinson.variable}`}>
       <body>{children}</body>
     </html>
   );

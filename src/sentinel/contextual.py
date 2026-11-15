@@ -12,13 +12,13 @@ returns {"status": "unavailable", "reason": ...}; the main result is unaffected.
 Configuration (environment variables, all server-side):
   ANTHROPIC_API_KEY              required to enable; never sent to the browser
   ANTHROPIC_WORKSPACE_ID         optional; sent as the anthropic-workspace-id header
-  VERITAS_LLM_ENABLED            "1" to enable (default off)
-  VERITAS_LLM_MODEL              default claude-haiku-5-5
-  VERITAS_LLM_EFFORT             default low
-  VERITAS_LLM_TIMEOUT_S          default 8
-  VERITAS_LLM_DAILY_BUDGET_USD   default 1.00  (per server instance; see SpendGuard)
-  VERITAS_LLM_PRICE_IN_PER_MTOK  default 0.10  (Haiku 5.5, prompts <= 100K tokens)
-  VERITAS_LLM_PRICE_OUT_PER_MTOK default 0.50
+  SENTINEL_LLM_ENABLED            "1" to enable (default off)
+  SENTINEL_LLM_MODEL              default claude-haiku-5-5
+  SENTINEL_LLM_EFFORT             default low
+  SENTINEL_LLM_TIMEOUT_S          default 8
+  SENTINEL_LLM_DAILY_BUDGET_USD   default 1.00  (per server instance; see SpendGuard)
+  SENTINEL_LLM_PRICE_IN_PER_MTOK  default 0.10  (Haiku 5.5, prompts <= 100K tokens)
+  SENTINEL_LLM_PRICE_OUT_PER_MTOK default 0.50
 """
 from __future__ import annotations
 
@@ -26,6 +26,8 @@ import copy
 import datetime as _dt
 import json
 import os
+
+from sentinel.settings import env
 import re
 import threading
 from typing import Annotated, Literal
@@ -160,20 +162,20 @@ EST_INPUT_TOKENS = 1600  # system prompt + schema + 2,000-char message, generous
 
 def _env_float(name: str, default: float) -> float:
     try:
-        return float(os.environ.get(name, default))
+        return float(env(name, str(default)))
     except ValueError:
         return default
 
 
 class Settings:
     def __init__(self) -> None:
-        self.enabled = os.environ.get("VERITAS_LLM_ENABLED") == "1" and bool(os.environ.get("ANTHROPIC_API_KEY"))
-        self.model = os.environ.get("VERITAS_LLM_MODEL", "claude-haiku-5-5")
-        self.effort = os.environ.get("VERITAS_LLM_EFFORT", "low")
-        self.timeout = _env_float("VERITAS_LLM_TIMEOUT_S", 8.0)
-        self.price_in = _env_float("VERITAS_LLM_PRICE_IN_PER_MTOK", 0.10) / 1e6
-        self.price_out = _env_float("VERITAS_LLM_PRICE_OUT_PER_MTOK", 0.50) / 1e6
-        self.budget = _env_float("VERITAS_LLM_DAILY_BUDGET_USD", 1.00)
+        self.enabled = env("LLM_ENABLED") == "1" and bool(os.environ.get("ANTHROPIC_API_KEY"))
+        self.model = env("LLM_MODEL", "claude-haiku-5-5")
+        self.effort = env("LLM_EFFORT", "low")
+        self.timeout = _env_float("LLM_TIMEOUT_S", 8.0)
+        self.price_in = _env_float("LLM_PRICE_IN_PER_MTOK", 0.10) / 1e6
+        self.price_out = _env_float("LLM_PRICE_OUT_PER_MTOK", 0.50) / 1e6
+        self.budget = _env_float("LLM_DAILY_BUDGET_USD", 1.00)
         self.workspace = os.environ.get("ANTHROPIC_WORKSPACE_ID")
 
     @property

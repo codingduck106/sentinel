@@ -1,0 +1,522 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-15T05:29:05+00:00",
+  "title": "Design System: Sentinel",
+  "extensions": {
+    "colorMeta": {
+      "terminal-black": {
+        "role": "neutral",
+        "displayName": "Terminal Black",
+        "canonical": "#040705",
+        "oklch": "oklch(12.2% 0.009 157)",
+        "tonalRamp": [
+          "oklch(15% 0.005 157)",
+          "oklch(26% 0.006 157)",
+          "oklch(38% 0.007 157)",
+          "oklch(49% 0.008 157)",
+          "oklch(61% 0.009 157)",
+          "oklch(72% 0.008 157)",
+          "oklch(84% 0.007 157)",
+          "oklch(95% 0.006 157)"
+        ]
+      },
+      "panel-black": {
+        "role": "neutral",
+        "displayName": "Panel Black",
+        "canonical": "#08110b",
+        "oklch": "oklch(16.6% 0.019 155)",
+        "tonalRamp": [
+          "oklch(15% 0.009 155)",
+          "oklch(26% 0.011 155)",
+          "oklch(38% 0.014 155)",
+          "oklch(49% 0.016 155)",
+          "oklch(61% 0.019 155)",
+          "oklch(72% 0.016 155)",
+          "oklch(84% 0.014 155)",
+          "oklch(95% 0.011 155)"
+        ]
+      },
+      "phosphor-white": {
+        "role": "neutral",
+        "displayName": "Phosphor White",
+        "canonical": "#d8f5e0",
+        "oklch": "oklch(94.3% 0.041 154)",
+        "tonalRamp": [
+          "oklch(15% 0.020 154)",
+          "oklch(26% 0.025 154)",
+          "oklch(38% 0.031 154)",
+          "oklch(49% 0.036 154)",
+          "oklch(61% 0.041 154)",
+          "oklch(72% 0.035 154)",
+          "oklch(84% 0.030 154)",
+          "oklch(95% 0.024 154)"
+        ]
+      },
+      "faded-phosphor": {
+        "role": "neutral",
+        "displayName": "Faded Phosphor",
+        "canonical": "#8db89a",
+        "oklch": "oklch(74.3% 0.063 154)",
+        "tonalRamp": [
+          "oklch(15% 0.030 154)",
+          "oklch(26% 0.038 154)",
+          "oklch(38% 0.047 154)",
+          "oklch(49% 0.055 154)",
+          "oklch(61% 0.063 154)",
+          "oklch(72% 0.054 154)",
+          "oklch(84% 0.046 154)",
+          "oklch(95% 0.037 154)"
+        ]
+      },
+      "scan-rule": {
+        "role": "neutral",
+        "displayName": "Scan Rule",
+        "canonical": "#1d3a26",
+        "oklch": "oklch(31.9% 0.050 153)",
+        "tonalRamp": [
+          "oklch(15% 0.024 153)",
+          "oklch(26% 0.031 153)",
+          "oklch(38% 0.037 153)",
+          "oklch(49% 0.044 153)",
+          "oklch(61% 0.050 153)",
+          "oklch(72% 0.043 153)",
+          "oklch(84% 0.036 153)",
+          "oklch(95% 0.030 153)"
+        ]
+      },
+      "bubble-green": {
+        "role": "neutral",
+        "displayName": "Bubble Green",
+        "canonical": "#0c1a11",
+        "oklch": "oklch(20.2% 0.027 155)",
+        "tonalRamp": [
+          "oklch(15% 0.013 155)",
+          "oklch(26% 0.016 155)",
+          "oklch(38% 0.020 155)",
+          "oklch(49% 0.023 155)",
+          "oklch(61% 0.027 155)",
+          "oklch(72% 0.023 155)",
+          "oklch(84% 0.019 155)",
+          "oklch(95% 0.016 155)"
+        ]
+      },
+      "phosphor": {
+        "role": "primary",
+        "displayName": "Phosphor",
+        "canonical": "#39ff6a",
+        "oklch": "oklch(87.7% 0.245 147)",
+        "tonalRamp": [
+          "oklch(15% 0.116 147)",
+          "oklch(26% 0.149 147)",
+          "oklch(38% 0.182 147)",
+          "oklch(49% 0.214 147)",
+          "oklch(61% 0.243 147)",
+          "oklch(72% 0.210 147)",
+          "oklch(84% 0.178 147)",
+          "oklch(95% 0.145 147)"
+        ]
+      },
+      "phosphor-dim": {
+        "role": "primary",
+        "displayName": "Phosphor Dim",
+        "canonical": "#1f9e45",
+        "oklch": "oklch(61.4% 0.166 148)",
+        "tonalRamp": [
+          "oklch(15% 0.079 148)",
+          "oklch(26% 0.101 148)",
+          "oklch(38% 0.123 148)",
+          "oklch(49% 0.145 148)",
+          "oklch(61% 0.165 148)",
+          "oklch(72% 0.143 148)",
+          "oklch(84% 0.120 148)",
+          "oklch(95% 0.098 148)"
+        ]
+      },
+      "on-phosphor": {
+        "role": "primary",
+        "displayName": "On Phosphor",
+        "canonical": "#031008",
+        "oklch": "oklch(15.6% 0.028 158)",
+        "tonalRamp": [
+          "oklch(15% 0.013 158)",
+          "oklch(26% 0.017 158)",
+          "oklch(38% 0.020 158)",
+          "oklch(49% 0.024 158)",
+          "oklch(61% 0.027 158)",
+          "oklch(72% 0.024 158)",
+          "oklch(84% 0.020 158)",
+          "oklch(95% 0.016 158)"
+        ]
+      },
+      "wash-urgency": {
+        "role": "secondary",
+        "displayName": "Urgency Amber Wash",
+        "canonical": "#f2b544",
+        "oklch": "oklch(81.0% 0.144 79)",
+        "tonalRamp": [
+          "oklch(15% 0.068 79)",
+          "oklch(26% 0.087 79)",
+          "oklch(38% 0.106 79)",
+          "oklch(49% 0.126 79)",
+          "oklch(61% 0.142 79)",
+          "oklch(72% 0.123 79)",
+          "oklch(84% 0.104 79)",
+          "oklch(95% 0.085 79)"
+        ]
+      },
+      "wash-fear": {
+        "role": "secondary",
+        "displayName": "Fear Burnt Orange Wash",
+        "canonical": "#e8763a",
+        "oklch": "oklch(68.8% 0.159 46)",
+        "tonalRamp": [
+          "oklch(15% 0.075 46)",
+          "oklch(26% 0.097 46)",
+          "oklch(38% 0.118 46)",
+          "oklch(49% 0.139 46)",
+          "oklch(61% 0.158 46)",
+          "oklch(72% 0.136 46)",
+          "oklch(84% 0.115 46)",
+          "oklch(95% 0.094 46)"
+        ]
+      },
+      "wash-authority": {
+        "role": "secondary",
+        "displayName": "Authority Periwinkle Wash",
+        "canonical": "#7c8cf0",
+        "oklch": "oklch(67.2% 0.148 275)",
+        "tonalRamp": [
+          "oklch(15% 0.071 275)",
+          "oklch(26% 0.090 275)",
+          "oklch(38% 0.110 275)",
+          "oklch(49% 0.130 275)",
+          "oklch(61% 0.147 275)",
+          "oklch(72% 0.127 275)",
+          "oklch(84% 0.108 275)",
+          "oklch(95% 0.088 275)"
+        ]
+      },
+      "wash-reward": {
+        "role": "secondary",
+        "displayName": "Reward Orchid Wash",
+        "canonical": "#c45fd0",
+        "oklch": "oklch(64.9% 0.190 323)",
+        "tonalRamp": [
+          "oklch(15% 0.090 323)",
+          "oklch(26% 0.115 323)",
+          "oklch(38% 0.141 323)",
+          "oklch(49% 0.166 323)",
+          "oklch(61% 0.188 323)",
+          "oklch(72% 0.163 323)",
+          "oklch(84% 0.138 323)",
+          "oklch(95% 0.112 323)"
+        ]
+      },
+      "mark-urgency": {
+        "role": "secondary",
+        "displayName": "Urgency Amber",
+        "canonical": "#c28908",
+        "oklch": "oklch(66.9% 0.138 79)",
+        "tonalRamp": [
+          "oklch(15% 0.065 79)",
+          "oklch(26% 0.084 79)",
+          "oklch(38% 0.102 79)",
+          "oklch(49% 0.120 79)",
+          "oklch(61% 0.136 79)",
+          "oklch(72% 0.118 79)",
+          "oklch(84% 0.100 79)",
+          "oklch(95% 0.081 79)"
+        ]
+      },
+      "mark-fear": {
+        "role": "secondary",
+        "displayName": "Fear Burnt Orange",
+        "canonical": "#bb4717",
+        "oklch": "oklch(55.0% 0.160 40)",
+        "tonalRamp": [
+          "oklch(15% 0.076 40)",
+          "oklch(26% 0.097 40)",
+          "oklch(38% 0.119 40)",
+          "oklch(49% 0.140 40)",
+          "oklch(61% 0.159 40)",
+          "oklch(72% 0.137 40)",
+          "oklch(84% 0.116 40)",
+          "oklch(95% 0.095 40)"
+        ]
+      },
+      "mark-authority": {
+        "role": "secondary",
+        "displayName": "Authority Periwinkle",
+        "canonical": "#7b8bef",
+        "oklch": "oklch(66.9% 0.149 275)",
+        "tonalRamp": [
+          "oklch(15% 0.071 275)",
+          "oklch(26% 0.090 275)",
+          "oklch(38% 0.110 275)",
+          "oklch(49% 0.130 275)",
+          "oklch(61% 0.147 275)",
+          "oklch(72% 0.128 275)",
+          "oklch(84% 0.108 275)",
+          "oklch(95% 0.088 275)"
+        ]
+      },
+      "mark-reward": {
+        "role": "secondary",
+        "displayName": "Reward Orchid",
+        "canonical": "#b838be",
+        "oklch": "oklch(58.0% 0.221 326)",
+        "tonalRamp": [
+          "oklch(15% 0.105 326)",
+          "oklch(26% 0.134 326)",
+          "oklch(38% 0.164 326)",
+          "oklch(49% 0.193 326)",
+          "oklch(61% 0.219 326)",
+          "oklch(72% 0.190 326)",
+          "oklch(84% 0.160 326)",
+          "oklch(95% 0.131 326)"
+        ]
+      },
+      "risk-low": {
+        "role": "tertiary",
+        "displayName": "All-Clear Teal",
+        "canonical": "#4fd1c5",
+        "oklch": "oklch(78.6% 0.114 187)",
+        "tonalRamp": [
+          "oklch(15% 0.054 187)",
+          "oklch(26% 0.070 187)",
+          "oklch(38% 0.085 187)",
+          "oklch(49% 0.100 187)",
+          "oklch(61% 0.113 187)",
+          "oklch(72% 0.098 187)",
+          "oklch(84% 0.083 187)",
+          "oklch(95% 0.068 187)"
+        ]
+      },
+      "risk-medium": {
+        "role": "tertiary",
+        "displayName": "Caution Yellow",
+        "canonical": "#ffcc4d",
+        "oklch": "oklch(86.8% 0.151 86)",
+        "tonalRamp": [
+          "oklch(15% 0.072 86)",
+          "oklch(26% 0.092 86)",
+          "oklch(38% 0.112 86)",
+          "oklch(49% 0.132 86)",
+          "oklch(61% 0.149 86)",
+          "oklch(72% 0.129 86)",
+          "oklch(84% 0.109 86)",
+          "oklch(95% 0.089 86)"
+        ]
+      },
+      "risk-high": {
+        "role": "tertiary",
+        "displayName": "Alarm Rose",
+        "canonical": "#ff8f8f",
+        "oklch": "oklch(77.0% 0.136 21)",
+        "tonalRamp": [
+          "oklch(15% 0.064 21)",
+          "oklch(26% 0.083 21)",
+          "oklch(38% 0.101 21)",
+          "oklch(49% 0.119 21)",
+          "oklch(61% 0.134 21)",
+          "oklch(72% 0.116 21)",
+          "oklch(84% 0.098 21)",
+          "oklch(95% 0.080 21)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headline in phosphor; 36px on phones."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles in ink; check-page title and verdict heading run larger."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Tactic names, card heads, flow nodes."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Every sentence a person must read; 17px on phones; measure 60-65ch."
+      },
+      "terminal": {
+        "displayName": "Terminal",
+        "purpose": "Prompt line, transcript lines, paste field (17px), button labels."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Chips, level tags, counters, legends, scale labels (14-15px)."
+      }
+    },
+    "shadows": [
+      {
+        "name": "cursor-glow",
+        "value": "0 0 10px rgb(57 255 106 / .55)",
+        "purpose": "The blinking prompt cursor only."
+      },
+      {
+        "name": "verdict-glow",
+        "value": "text-shadow: 0 0 14px color-mix(in srgb, var(--risk) 45%, transparent)",
+        "purpose": "The transcript verdict line only."
+      },
+      {
+        "name": "focus-ring",
+        "value": "outline: 2px solid #39ff6a; outline-offset: 3px",
+        "purpose": "All keyboard focus."
+      },
+      {
+        "name": "field-focus",
+        "value": "0 0 0 1px #39ff6a",
+        "purpose": "Text fields on focus, with a phosphor border."
+      }
+    ],
+    "motion": [
+      {
+        "name": "print-line",
+        "value": "110ms stagger; 220ms cubic-bezier(.16, 1, .3, 1) opacity + clip-path reveal left to right",
+        "purpose": "Transcript lines print one at a time on a result; all at once under reduced motion."
+      },
+      {
+        "name": "cursor-blink",
+        "value": "1.1s steps(1) infinite",
+        "purpose": "The prompt cursor; static under reduced motion."
+      },
+      {
+        "name": "state",
+        "value": "150ms background-color",
+        "purpose": "Button hover."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "640px"
+      },
+      {
+        "name": "stack",
+        "value": "720px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The lit phosphor Check action; brightest object after the headline.",
+      "html": "<button class=\"ds-btn\">Check this message</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-weight:700;font-size:16px;padding:14px 26px;border-radius:6px;border:0;cursor:pointer;background:var(--phos);color:var(--on-ink);transition:background-color .15s}.ds-btn:hover{background:#7dff9f}.ds-btn:focus-visible{outline:2px solid var(--phos);outline-offset:3px}"
+    },
+    {
+      "name": "Disabled Button",
+      "kind": "button",
+      "refersTo": "button-primary-disabled",
+      "description": "Shown when the message is over the length limit.",
+      "html": "<button class=\"ds-btn-off\" disabled>Check this message</button>",
+      "css": ".ds-btn-off{font-family:var(--font-display);font-weight:700;font-size:16px;padding:14px 26px;border-radius:6px;border:0;background:transparent;color:var(--ink-soft);box-shadow:inset 0 0 0 1px var(--line);cursor:not-allowed}"
+    },
+    {
+      "name": "Example Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Loads an example message into the field.",
+      "html": "<button class=\"ds-chip\">Bank alert</button>",
+      "css": ".ds-chip{font-family:var(--font-display);font-size:14px;padding:6px 12px;border-radius:4px;cursor:pointer;background:transparent;color:var(--ink);border:1px solid var(--line)}.ds-chip:hover{border-color:var(--phos-dim);color:var(--phos)}.ds-chip:focus-visible{outline:2px solid var(--phos);outline-offset:3px}"
+    },
+    {
+      "name": "Terminal Field",
+      "kind": "input",
+      "refersTo": "input-terminal",
+      "description": "The paste field inside the terminal window.",
+      "html": "<textarea class=\"ds-field\" placeholder=\"Paste it here, links and numbers included\"></textarea>",
+      "css": ".ds-field{width:100%;min-height:84px;font-family:var(--font-display);font-size:17px;line-height:1.6;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:16px 16px 36px;caret-color:var(--phos)}.ds-field::placeholder{color:var(--ink-soft)}.ds-field:focus{outline:none;border-color:var(--phos);box-shadow:0 0 0 1px var(--phos)}"
+    },
+    {
+      "name": "Top Bar",
+      "kind": "nav",
+      "description": "Wordmark left, two text links right.",
+      "html": "<header class=\"ds-top\"><a class=\"ds-mark\" href=\"#\">sentinel<span>_</span></a><nav><a href=\"#\">How it works</a><a href=\"#\">Limits</a></nav></header>",
+      "css": ".ds-top{display:flex;align-items:center;justify-content:space-between;padding:18px 0}.ds-mark{font-family:var(--font-display);font-weight:800;font-size:20px;letter-spacing:-0.02em;color:var(--ink);text-decoration:none}.ds-mark span{color:var(--phos)}.ds-top nav{display:flex;gap:24px;font-size:16px}.ds-top nav a{color:var(--ink-soft);text-decoration:none}.ds-top nav a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:4px}"
+    },
+    {
+      "name": "Terminal Transcript",
+      "kind": "custom",
+      "refersTo": "terminal-window",
+      "description": "Signature: prompt with blinking cursor, flagged lines keyed by dot, glowing verdict line.",
+      "html": "<div class=\"ds-term\"><p class=\"ds-cmd\"><span class=\"ds-p\">$</span> sentinel check<span class=\"ds-cur\"></span></p><ol class=\"ds-out\"><li><span class=\"ds-dot\" style=\"background:var(--mk-urgency)\"></span><b>Urgency</b><span class=\"ds-q\">“within 24 hours”</span></li><li><span class=\"ds-dot\" style=\"background:var(--mk-fear)\"></span><b>Fear</b><span class=\"ds-q\">“will be suspended”</span></li><li class=\"ds-q\">Spam pattern match 37%</li><li class=\"ds-v\"><span class=\"ds-vt\">This looks like a scam</span><span class=\"ds-tag\">High risk</span></li></ol></div>",
+      "css": ".ds-term{background:var(--surface);border:1px solid var(--phos-dim);border-radius:8px;padding:16px 24px 22px;font-family:var(--font-display);font-size:16px;color:var(--ink)}.ds-cmd{margin:0 0 12px;color:var(--ink-soft)}.ds-p{color:var(--phos);margin-right:4px}.ds-cur{display:inline-block;width:.6em;height:1.1em;margin-left:4px;vertical-align:-.2em;background:var(--phos);box-shadow:0 0 10px rgb(57 255 106/.55);animation:ds-blink 1.1s steps(1) infinite}@keyframes ds-blink{50%{opacity:0}}.ds-out{list-style:none;margin:0;padding:12px 0 0;border-top:1px dashed var(--line);display:grid;gap:4px}.ds-out li{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}.ds-out li::before{content:'>';color:var(--phos-dim)}.ds-dot{display:inline-block;width:10px;height:10px;border-radius:999px;align-self:center}.ds-q{color:var(--ink-soft)}.ds-v{margin-top:8px;padding-top:10px;border-top:1px solid var(--line)}.ds-v::before{color:var(--risk-high)!important}.ds-vt{font-size:24px;font-weight:800;color:var(--risk-high);letter-spacing:-0.02em;text-shadow:0 0 14px color-mix(in srgb,var(--risk-high) 45%,transparent)}.ds-tag{font-size:14px;border:1px solid var(--risk-high);color:var(--risk-high);padding:1px 8px;border-radius:4px}@media (prefers-reduced-motion:reduce){.ds-cur{animation:none}}"
+    },
+    {
+      "name": "Highlighted Message",
+      "kind": "custom",
+      "description": "Evidence words painted with a translucent tactic wash; ink text on top.",
+      "html": "<p class=\"ds-bub\">HSBC: We have detected <mark class=\"ds-hl\" style=\"--c:var(--hl-fear)\">unusual activity</mark> on your account. Verify <mark class=\"ds-hl\" style=\"--c:var(--hl-urgency)\">within 24 hours</mark>.</p>",
+      "css": ".ds-bub{background:var(--bubble);border-radius:8px;padding:20px;font-size:19px;line-height:1.5;color:var(--ink);font-family:var(--font-body)}.ds-hl{background-color:transparent;color:inherit;padding:.04em .14em;margin:0 -.06em;border-radius:.3em .6em .4em .5em;background-image:linear-gradient(100deg,color-mix(in srgb,var(--c) 35%,transparent),color-mix(in srgb,var(--c) 47%,transparent));box-decoration-break:clone;-webkit-box-decoration-break:clone}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Phosphor Terminal",
+    "overview": "**Creative North Star: \"Phosphor Terminal\"**\n\nSentinel is a live terminal session that checks scam texts. The homepage does not describe a tool; it is the tool: a `$ sentinel check` prompt with a blinking cursor, a paste field inside the window, and a transcript that prints flagged phrases line by line and ends on a verdict. The ground is terminal black with a breath of green, type and rules glow phosphor green, and a faint scanline texture belongs to the screen itself rather than sitting on top as decoration.\n\nThe binding user steer for this world is \"dark-themed, the typical 'hacker' black and neon green vibe; a sense of danger, but also totally calm\". The danger lives in the vocabulary (a terminal reading a hostile message, red reserved for one word of verdict); the calm lives in the restraint: soft phosphor-white reading text rather than neon, flat panels, hairline rules, a single motion moment, and a humanist sans for every sentence a frightened person has to read. This world replaced the earlier light \"Veritas\" system by explicit user decision, which also lifted that system's ban on a dark security-console look.\n\nThe wordmark is lowercase `sentinel_` in JetBrains Mono 800, ink with the trailing underscore in phosphor green, standing in for the cursor.",
+    "keyCharacteristics": [
+      "Dark only (`color-scheme: dark`); terminal black page, panel black windows.",
+      "Phosphor green is the brand: headline, prompt glyph, cursor, primary action, focus ring.",
+      "Monospace for machine voice (headings, prompt, output lines, labels); Atkinson Hyperlegible for human sentences.",
+      "Text never wears a series colour; tactic colours appear only as dots, bars and highlighter washes.",
+      "Flat surfaces, 1px hairline rules, 4 to 8px corners.",
+      "One motion moment: the transcript prints line by line; the cursor blinks. Both stop under reduced motion."
+    ],
+    "rules": [
+      {
+        "name": "The Reserved Red Rule",
+        "body": "Red-family hue as type belongs to the High verdict alone. Fear is burnt orange; errors use phosphor-dim borders, not red.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ink-Not-Series Rule",
+        "body": "Text never wears a tactic colour. A flagged line is ink, keyed by the tactic's dot; evidence words are ink on a wash.",
+        "section": "colors"
+      },
+      {
+        "name": "The Green Is The Brand Rule",
+        "body": "No tactic or status hue may be green; green means Sentinel itself.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Voices Rule",
+        "body": "Mono for what the machine says (headings, prompt, output, labels); Atkinson for what a person must understand (explanations, advice, captions). Never set a paragraph of advice in mono.",
+        "section": "typography"
+      },
+      {
+        "name": "The Two Glows Rule",
+        "body": "Glow exists in exactly two places: the live cursor and the verdict line. Nothing else emits light.",
+        "section": "elevation"
+      },
+      {
+        "name": "The No Nesting Rule",
+        "body": "A panel never sits inside another bordered panel; subdivisions inside a panel are hairline top rules (signals, explanation cards, method notes), not cards.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do keep the page dark only, on terminal black (#040705), with the scanline texture at its current faintness.",
+      "Do set headings, the prompt, transcript lines, labels and buttons in JetBrains Mono, and every explanatory sentence in Atkinson Hyperlegible at 17 to 18px with a measure near 60 to 65ch.",
+      "Do key tactic lines with a coloured dot and leave the text in ink.",
+      "Do pair every risk colour with an icon and a written level.",
+      "Do keep the primary Check button lit phosphor at rest.",
+      "Do divide inside a panel with 1px hairline top rules.",
+      "Do honour reduced motion by showing the full transcript at once and stopping the cursor."
+    ],
+    "donts": [
+      "Don't use a red-family hue for anything except the High verdict; fear stays burnt orange and errors use phosphor dim.",
+      "Don't colour text with a tactic hue, or introduce any green that is not the brand.",
+      "Don't add glow beyond the cursor and the verdict line.",
+      "Don't add motion beyond the line-by-line print and the cursor blink.",
+      "Don't nest bordered cards or use coloured side stripes on containers.",
+      "Don't exceed 8px corner radius on surfaces, or add drop shadows to panels.",
+      "Don't set long reading text in mono, or in neon phosphor."
+    ]
+  }
+}

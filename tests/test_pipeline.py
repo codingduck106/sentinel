@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from veritas.analyze import analyze
-from veritas.classifier import DEFAULT_MODEL, SpamClassifier, build_pipeline
+from sentinel.analyze import analyze
+from sentinel.classifier import DEFAULT_MODEL, SpamClassifier, build_pipeline
 
 TOY_X = ["win a free prize call 09061701461 now", "claim your £500 cash txt WIN to 87066",
          "urgent you have won a voucher reply YES", "free entry weekly draw txt to 80086",

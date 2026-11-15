@@ -8,4 +8,4 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "src"))
 
-from veritas.api import app  # noqa: E402,F401
+from sentinel.api import app  # noqa: E402,F401

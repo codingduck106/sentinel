@@ -20,8 +20,8 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parent))
-from veritas.classifier import SpamClassifier  # noqa: E402
-from veritas.tactics import detect  # noqa: E402
+from sentinel.classifier import SpamClassifier  # noqa: E402
+from sentinel.tactics import detect  # noqa: E402
 
 SEED = 0
 THRESHOLDS = [0.2, 0.3, 0.353, 0.5, 0.6, 0.7, 0.8, 0.9]

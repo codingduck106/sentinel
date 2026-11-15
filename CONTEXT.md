@@ -1,18 +1,18 @@
-# CONTEXT.md — Veritas project handoff
+# CONTEXT.md — Sentinel project handoff
 
 _Last updated 2026-11-15 (AI layer deployed and verified). This is a compressed summary of the whole development history, written so another coding assistant can continue the work._
 
-## 1. What Veritas is
+## 1. What Sentinel is
 A public web app. You paste a suspicious SMS and get:
 - a plain-language verdict (Low / Medium / High risk);
 - the exact manipulative words, highlighted by tactic;
 - advice on what to do.
 
-**Live (production):** https://veritas-nine-gamma.vercel.app. Vercel project `veritas`, team `codingduck106s-projects`.
+**Live (production):** https://sentinel-scam-checker.vercel.app. Vercel project `sentinel` (renamed from `veritas`; old URL veritas-nine-gamma.vercel.app still attached), team `codingduck106s-projects`.
 
 ## 2. Architecture
 ```
-Browser (Next.js 16, web/) ── POST /api/analyze ──► FastAPI (main.py → src/veritas/api.py)
+Browser (Next.js 16, web/) ── POST /api/analyze ──► FastAPI (main.py → src/sentinel/api.py)
                                                     ├─ classifier.py  normalize → TF-IDF (word 1–2 + char 3–5) → LogisticRegression → P(spam)
                                                     ├─ tactics.py     rule-based: urgency, fear, authority_impersonation, reward (+ exact evidence spans)
                                                     └─ explain.py     risk engine + plain-language copy
@@ -28,12 +28,12 @@ Browser (Next.js 16, web/) ── POST /api/analyze ──► FastAPI (main.py �
 ## 3. Key files
 | path | role |
 |---|---|
-| `src/veritas/preprocess.py` | Normalization. Placeholders AND real values map to shared tokens (`num`, `urltok`, `emailtok`, `timetok`, `moneytok`). **Phone numbers and short codes must stay `num`**: separate tokens were an anonymization artifact that broke out-of-domain performance. |
-| `src/veritas/classifier.py` | `build_pipeline`, `SpamClassifier` (joblib load = pickle: only load our own model) |
-| `src/veritas/tactics.py` | Weighted regex cues; `score = min(1, Σweights)`, detected if score ≥ 0.5. Brand names that are common words (EE, UPS, Apple, …) only match when capitalized as the brand. |
-| `src/veritas/explain.py` | `risk_level`, `risk_score` (detected tactics only), `TACTIC_INFO` copy |
-| `src/veritas/api.py` | FastAPI routes and hardening (16 KB body cap, 413/411, generic error bodies, docs off unless `VERITAS_ENABLE_DOCS=1`, CORS closed unless `VERITAS_CORS_ORIGINS`). Converts evidence offsets to UTF-16 (emoji-safe). |
-| `src/veritas/contextual.py` | Opt-in Claude layer (see §6) |
+| `src/sentinel/preprocess.py` | Normalization. Placeholders AND real values map to shared tokens (`num`, `urltok`, `emailtok`, `timetok`, `moneytok`). **Phone numbers and short codes must stay `num`**: separate tokens were an anonymization artifact that broke out-of-domain performance. |
+| `src/sentinel/classifier.py` | `build_pipeline`, `SpamClassifier` (joblib load = pickle: only load our own model) |
+| `src/sentinel/tactics.py` | Weighted regex cues; `score = min(1, Σweights)`, detected if score ≥ 0.5. Brand names that are common words (EE, UPS, Apple, …) only match when capitalized as the brand. |
+| `src/sentinel/explain.py` | `risk_level`, `risk_score` (detected tactics only), `TACTIC_INFO` copy |
+| `src/sentinel/api.py` | FastAPI routes and hardening (16 KB body cap, 413/411, generic error bodies, docs off unless `SENTINEL_ENABLE_DOCS=1`, CORS closed unless `SENTINEL_CORS_ORIGINS`). Converts evidence offsets to UTF-16 (emoji-safe). |
+| `src/sentinel/contextual.py` | Opt-in Claude layer (see §6) |
 | `main.py` | Vercel Python entrypoint; sets `JOBLIB_MULTIPROCESSING=0` |
 | `models/spam_lr.joblib` | Trained model: C=30, threshold 0.353 (chosen on val) |
 | `src/prepare_data.py`, `src/train.py`, `src/eval_ood.py`, `src/eval_risk_rules.py`, `src/generalization_report.py` | Data prep, training and evaluation scripts |
@@ -46,11 +46,11 @@ Browser (Next.js 16, web/) ── POST /api/analyze ──► FastAPI (main.py �
 ## 4. Run and test
 ```bash
 python3 -m venv .venv && . .venv/bin/activate && pip install -e . -r requirements-dev.txt
-uvicorn veritas.api:app --port 8000 --app-dir src        # API
+uvicorn sentinel.api:app --port 8000 --app-dir src        # API
 cd web && npm install && npm run dev                      # http://localhost:3000 (proxies /api → :8000 in dev)
 python -m pytest                                          # 94 tests (Claude always mocked; includes tests/test_lockfile.py)
 cd web && npx playwright test                             # 60 E2E (desktop, Pixel 7, iPhone-size via Chromium); AI endpoint mocked
-E2E_BASE_URL=https://veritas-nine-gamma.vercel.app npx playwright test --project desktop   # against prod, one project at a time
+E2E_BASE_URL=https://sentinel-scam-checker.vercel.app npx playwright test --project desktop   # against prod, one project at a time
 ```
 - **Vercel CLI:** `vercel deploy --prod` from the repo root.
 - **Local build:** `vercel build` needs `uv` on PATH (installed in `.venv`).
@@ -87,12 +87,12 @@ Model choice:
 - **Model:** `claude-haiku-5-5` (cheapest current; Haiku 3.5 is retired), `effort: low`, `thinking: disabled`, `max_tokens` 1024, structured output via `output_config.format` json_schema. Length keywords are unsupported by the API, so they're stated in the prompt and enforced by Pydantic.
 - **Measured (re-measured 2026-11-15 after the prompt/encoding/redaction changes):** 16/16 strict-valid live answers, 10/10 scams caught, bank and delivery notices clean, median 3.2 s, about $0.0003 per check. It flags the genuine "URGENT: card payment due" reminder (urgency/fear), which the rules already rate High anyway. Romance message tactic set varied between runs (7/8 repeatable).
 
-Settings (env vars): `VERITAS_LLM_ENABLED=1`, `ANTHROPIC_API_KEY` (workspace-scoped; locally in `.env.anthropic`, which is git- and Vercel-ignored — **never print or commit it**), optional `ANTHROPIC_WORKSPACE_ID`, `VERITAS_LLM_MODEL`, `VERITAS_LLM_EFFORT`, `VERITAS_LLM_TIMEOUT_S` (8), `VERITAS_LLM_DAILY_BUDGET_USD` (1.00), and price overrides.
+Settings (env vars): `SENTINEL_LLM_ENABLED=1`, `ANTHROPIC_API_KEY` (workspace-scoped; locally in `.env.anthropic`, which is git- and Vercel-ignored — **never print or commit it**), optional `ANTHROPIC_WORKSPACE_ID`, `SENTINEL_LLM_MODEL`, `SENTINEL_LLM_EFFORT`, `SENTINEL_LLM_TIMEOUT_S` (8), `SENTINEL_LLM_DAILY_BUDGET_USD` (1.00), and price overrides.
 
 **Safeguards in place:**
 - **Anthropic workspace spend limit:** set by the user in the Anthropic Console. This is the hard global cost ceiling. Workspace rate limits are also set there.
-- **In-app daily budget:** `VERITAS_LLM_DAILY_BUDGET_USD`, per server instance only.
-- **Vercel env vars (Production only, encrypted):** `ANTHROPIC_API_KEY`, `VERITAS_LLM_ENABLED`, `VERITAS_LLM_DAILY_BUDGET_USD`, `VERITAS_LLM_MODEL`, `VERITAS_LLM_EFFORT`, `VERITAS_LLM_TIMEOUT_S`.
+- **In-app daily budget:** `SENTINEL_LLM_DAILY_BUDGET_USD`, per server instance only.
+- **Vercel env vars (Production only, encrypted):** `ANTHROPIC_API_KEY`, `SENTINEL_LLM_ENABLED`, `SENTINEL_LLM_DAILY_BUDGET_USD`, `SENTINEL_LLM_MODEL`, `SENTINEL_LLM_EFFORT`, `SENTINEL_LLM_TIMEOUT_S`.
 
 **Open items (optional):**
 1. **UX decision:** the AI card can contradict the rating. For example, the "Hi Mum" scam is rated Low by the rules while the AI explains it's a scam. The user hasn't decided whether to change this.
@@ -131,7 +131,7 @@ Alternatives investigated and rejected (don't re-investigate without reason):
   - The design uses separate **wash** colours (highlighter) and **mark** colours (bars and dots, validated for colour-blind readers in light and dark mode), plus status colours kept distinct from the marks. Text never uses series colours. See `.superdesign/design-system.md`.
   - Use a `<mark>` reset (`background-color: transparent`), or the browser's yellow shows through the highlights.
 - **Dependencies:** Vercel installs the Python backend from **`uv.lock`**, not from `pyproject.toml`. After changing dependencies, run `uv lock` and commit `uv.lock`. `tests/test_lockfile.py` fails if they drift.
-- **Rollbacks:** after an instant rollback, new production deploys are **not** auto-assigned to the domain until `vercel promote <deployment-url>`. Check with `vercel api /v9/projects/veritas` (`autoAssignCustomDomains`).
-- **Shell:** `pkill -f "pattern"` matches its own shell. Use a pattern like `"uvicorn veritas[.]api"`.
+- **Rollbacks:** after an instant rollback, new production deploys are **not** auto-assigned to the domain until `vercel promote <deployment-url>`. Check with `vercel api /v9/projects/sentinel` (`autoAssignCustomDomains`).
+- **Shell:** `pkill -f "pattern"` matches its own shell. Use a pattern like `"uvicorn sentinel[.]api"`.
 - **Superdesign:** the project canvas has only the landing draft (credits ran out). Other screens were built in code.
 - **Scratch files are temporary:** the benchmark scripts and results were in a temporary scratch folder and may be gone. The key findings are recorded in this file and in `docs/`.

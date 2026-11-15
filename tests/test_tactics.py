@@ -2,7 +2,7 @@
 fear or impersonation examples, so these are the main check on those detectors."""
 import pytest
 
-from veritas.tactics import detect
+from sentinel.tactics import detect
 
 POSITIVES = [
     # (text, tactics that must be detected)

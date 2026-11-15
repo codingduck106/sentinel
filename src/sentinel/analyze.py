@@ -1,7 +1,7 @@
 """Top-level entry: analyze(text) -> scam probability, spam/legit label, manipulation tactics.
 
-CLI:  python -m veritas.analyze "URGENT! Your account is suspended, call 0800..."
-      echo "msg" | python -m veritas.analyze
+CLI:  python -m sentinel.analyze "URGENT! Your account is suspended, call 0800..."
+      echo "msg" | python -m sentinel.analyze
 """
 from __future__ import annotations
 
@@ -10,8 +10,8 @@ import sys
 from functools import lru_cache
 from pathlib import Path
 
-from veritas.classifier import DEFAULT_MODEL, SpamClassifier
-from veritas.tactics import detect_dict
+from sentinel.classifier import DEFAULT_MODEL, SpamClassifier
+from sentinel.tactics import detect_dict
 
 
 @lru_cache(maxsize=1)

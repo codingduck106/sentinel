@@ -1,6 +1,6 @@
 import pytest
 
-from veritas.preprocess import normalize
+from sentinel.preprocess import normalize
 
 
 @pytest.mark.parametrize("placeholder, real, token", [

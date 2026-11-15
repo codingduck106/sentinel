@@ -16,7 +16,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.preprocessing import FunctionTransformer
 
-from veritas.preprocess import normalize_many
+from sentinel.preprocess import normalize_many
 
 DEFAULT_MODEL = Path(__file__).resolve().parents[2] / "models" / "spam_lr.joblib"
 

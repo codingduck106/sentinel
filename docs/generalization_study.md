@@ -1,6 +1,6 @@
 # Do traditional SMS spam detectors generalize to modern social-engineering scams?
 
-_Veritas generalization study, 2026-11-14. Reproduce: `python src/generalization_report.py`._
+_Sentinel (then named Veritas) generalization study, 2026-11-14. Reproduce: `python src/generalization_report.py`._
 
 **Question.** A spam classifier trained on historical UK SMS (2011) looks excellent in-domain. How well does it carry over to modern-style scam messages from a different region and time? Does detecting *manipulation tactics* (urgency, fear, impersonation, reward) generalize better than learning spam vocabulary?
 

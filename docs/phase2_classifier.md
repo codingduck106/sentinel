@@ -3,10 +3,10 @@
 _Last updated 2026-11-14_
 
 ```
-                    ┌──────────────────────── classifier (src/veritas/classifier.py) ───────────────────────┐
+                    ┌──────────────────────── classifier (src/sentinel/classifier.py) ───────────────────────┐
 Input text ──┬────► │ normalize() → TF-IDF [word 1–2 + char_wb 3–5] → LogisticRegression(C=30) → P(spam)   │ ──► scam_probability, label
              │      └────────────────────────────────────────────────────────────────────────────────────────┘
-             └────► tactics.detect()  (src/veritas/tactics.py — independent, rule-based)                     ──► urgency / fear /
+             └────► tactics.detect()  (src/sentinel/tactics.py — independent, rule-based)                     ──► urgency / fear /
                                                                                                                  authority_impersonation / reward
 ```
 
@@ -15,7 +15,7 @@ Input text ──┬────► │ normalize() → TF-IDF [word 1–2 + cha
 . .venv/bin/activate && pip install -e . -r requirements-dev.txt
 python src/train.py                         # fit on train, select C + threshold on val
 python src/eval_ood.py                      # OOD report (needs data/ood/*.parquet — see §5)
-python -m veritas.analyze "Final notice: your account will be suspended. Call 0800 123 4567 now"
+python -m sentinel.analyze "Final notice: your account will be suspended. Call 0800 123 4567 now"
 python -m pytest                            # 37 tests
 ```
 `analyze(text)` returns `{scam_probability, label, threshold, tactics: {name: {detected, score, evidence[]}}, tactics_detected}`.
@@ -153,10 +153,10 @@ The detectors find the tactic each scam type is built around: fear in SSN threat
 ## Files
 | file | role |
 |---|---|
-| `src/veritas/preprocess.py` | normalization and the shared-token mapping |
-| `src/veritas/classifier.py` | `build_pipeline`, `SpamClassifier` (proba / predict / save / load / top_features) |
-| `src/veritas/tactics.py` | `TACTICS` cue tables, `detect()`, `detect_dict()` |
-| `src/veritas/analyze.py` | `analyze(text)` and the CLI |
+| `src/sentinel/preprocess.py` | normalization and the shared-token mapping |
+| `src/sentinel/classifier.py` | `build_pipeline`, `SpamClassifier` (proba / predict / save / load / top_features) |
+| `src/sentinel/tactics.py` | `TACTICS` cue tables, `detect()`, `detect_dict()` |
+| `src/sentinel/analyze.py` | `analyze(text)` and the CLI |
 | `src/train.py` | training and model selection; `--final-test` for the test report |
 | `src/eval_ood.py` | OOD report, writes `models/ood_metrics.json` |
 | `models/spam_lr.joblib` | trained model. Loading uses pickle: only load files you produced yourself. |

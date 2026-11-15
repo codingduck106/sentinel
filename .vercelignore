@@ -9,3 +9,7 @@ web/playwright-report
 .superdesign
 .env*
 .pytest_cache
+.claude
+.agent
+.gemini
+.impeccable

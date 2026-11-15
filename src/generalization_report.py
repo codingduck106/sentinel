@@ -21,8 +21,8 @@ from scipy.stats import beta
 from sklearn.metrics import f1_score, roc_auc_score
 
 sys.path.insert(0, str(Path(__file__).parent))
-from veritas.classifier import SpamClassifier  # noqa: E402
-from veritas.tactics import detect  # noqa: E402
+from sentinel.classifier import SpamClassifier  # noqa: E402
+from sentinel.tactics import detect  # noqa: E402
 
 B, SEED = 2000, 0
 

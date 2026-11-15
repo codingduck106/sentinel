@@ -6,8 +6,8 @@ from types import SimpleNamespace
 import pytest
 from fastapi.testclient import TestClient
 
-import veritas.contextual as ctx
-from veritas.api import app
+import sentinel.contextual as ctx
+from sentinel.api import app
 
 SCAM = "Hi Mum, I dropped my phone, this is my new number. Can you send me £200? Call 07700900123"
 GOOD = {
@@ -37,9 +37,9 @@ class FakeMessages:
 
 @pytest.fixture
 def enabled(monkeypatch):
-    monkeypatch.setenv("VERITAS_LLM_ENABLED", "1")
+    monkeypatch.setenv("SENTINEL_LLM_ENABLED", "1")
     monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-test-not-real")
-    monkeypatch.setenv("VERITAS_LLM_DAILY_BUDGET_USD", "1.00")
+    monkeypatch.setenv("SENTINEL_LLM_DAILY_BUDGET_USD", "1.00")
     ctx.reset_for_tests()
     yield
     ctx.reset_for_tests()
@@ -73,13 +73,13 @@ def test_consent_field_is_mandatory(api, enabled, monkeypatch):
 
 
 def test_disabled_by_default(api, monkeypatch):
-    monkeypatch.delenv("VERITAS_LLM_ENABLED", raising=False)
+    monkeypatch.delenv("SENTINEL_LLM_ENABLED", raising=False)
     ctx.reset_for_tests()
     assert post(api).json() == {"status": "unavailable", "reason": "disabled"}
 
 
 def test_enabled_flag_without_key_stays_disabled(api, monkeypatch):
-    monkeypatch.setenv("VERITAS_LLM_ENABLED", "1")
+    monkeypatch.setenv("SENTINEL_LLM_ENABLED", "1")
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
     ctx.reset_for_tests()
     assert post(api).json()["reason"] == "disabled"
@@ -237,11 +237,11 @@ def test_provider_failures_degrade_gracefully(api, enabled, monkeypatch, make, r
 
 # ------------------------------------------------------------------ spending cap
 def test_daily_budget_blocks_calls(api, monkeypatch):
-    monkeypatch.setenv("VERITAS_LLM_ENABLED", "1")
+    monkeypatch.setenv("SENTINEL_LLM_ENABLED", "1")
     monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-ant-test-not-real")
     ctx.reset_for_tests()
     worst = ctx.settings().worst_case_cost
-    monkeypatch.setenv("VERITAS_LLM_DAILY_BUDGET_USD", str(worst * 2.5))  # room for 2 worst-case reservations
+    monkeypatch.setenv("SENTINEL_LLM_DAILY_BUDGET_USD", str(worst * 2.5))  # room for 2 worst-case reservations
     ctx.reset_for_tests()
     fake = use_fake(monkeypatch, FakeMessages(GOOD))
     results = [post(api).json() for _ in range(6)]
@@ -273,3 +273,14 @@ def test_missing_sdk_degrades_gracefully_without_holding_budget(api, enabled, mo
     r = post(api)
     assert r.status_code == 200 and r.json() == {"status": "unavailable", "reason": "error"}
     assert ctx.guard().spent == 0.0
+
+
+def test_pre_rename_env_names_still_work(monkeypatch):
+    """Production may still hold VERITAS_* variables; the rename must not silently switch the AI layer off."""
+    from sentinel.settings import env
+
+    monkeypatch.delenv("SENTINEL_LLM_MODEL", raising=False)
+    monkeypatch.setenv("VERITAS_LLM_MODEL", "old-name-model")
+    assert env("LLM_MODEL", "default") == "old-name-model"
+    monkeypatch.setenv("SENTINEL_LLM_MODEL", "new-name-model")
+    assert env("LLM_MODEL", "default") == "new-name-model"

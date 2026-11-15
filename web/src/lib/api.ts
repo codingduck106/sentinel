@@ -39,7 +39,7 @@ export async function analyzeMessage(text: string, signal?: AbortSignal): Promis
     });
   } catch (e) {
     if ((e as Error).name === "AbortError") throw e;
-    throw new AnalyzeError("Couldn't reach Veritas. Check your connection and try again.");
+    throw new AnalyzeError("Couldn't reach Sentinel. Check your connection and try again.");
   }
   if (res.status === 422 || res.status === 413) {
     throw new AnalyzeError(`Paste a message between 1 and ${MAX_CHARS} characters long.`);
@@ -48,7 +48,7 @@ export async function analyzeMessage(text: string, signal?: AbortSignal): Promis
     throw new AnalyzeError("Too many checks in a short time. Wait a minute and try again.");
   }
   if (!res.ok) {
-    throw new AnalyzeError("Veritas couldn't check this message right now. Try again in a moment.");
+    throw new AnalyzeError("Sentinel couldn't check this message right now. Try again in a moment.");
   }
   return (await res.json()) as AnalyzeResult;
 }

@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const PY = process.env.VERITAS_PYTHON ?? "../.venv/bin/python";
+const PY = process.env.SENTINEL_PYTHON ?? "../.venv/bin/python";
 const BASE = process.env.E2E_BASE_URL;
 
 export default defineConfig({
@@ -27,7 +27,7 @@ export default defineConfig({
     ? undefined
     : [
         {
-          command: `${PY} -m uvicorn veritas.api:app --port 8000 --app-dir ../src`,
+          command: `${PY} -m uvicorn sentinel.api:app --port 8000 --app-dir ../src`,
           url: "http://127.0.0.1:8000/api/health",
           reuseExistingServer: true,
         },

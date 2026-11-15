@@ -17,8 +17,8 @@ import pandas as pd
 from sklearn.metrics import average_precision_score, precision_score, recall_score, roc_auc_score
 
 sys.path.insert(0, str(Path(__file__).parent))
-from veritas.classifier import SpamClassifier  # noqa: E402
-from veritas.tactics import TACTICS, detect  # noqa: E402
+from sentinel.classifier import SpamClassifier  # noqa: E402
+from sentinel.tactics import TACTICS, detect  # noqa: E402
 
 OOD = Path("data/ood")
 

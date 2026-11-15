@@ -1,15 +1,15 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from veritas.classifier import DEFAULT_MODEL
-from veritas.explain import risk_level
+from sentinel.classifier import DEFAULT_MODEL
+from sentinel.explain import risk_level
 
 pytestmark = pytest.mark.skipif(not DEFAULT_MODEL.exists(), reason="run src/train.py first")
 
 
 @pytest.fixture(scope="module")
 def client():
-    from veritas.api import app
+    from sentinel.api import app
     return TestClient(app)
 
 
@@ -66,7 +66,7 @@ def test_oversized_body_rejected_before_parsing(client):
 
 
 def test_unexpected_errors_are_generic(monkeypatch):
-    import veritas.api as api
+    import sentinel.api as api
     from fastapi.testclient import TestClient
     monkeypatch.setattr(api, "analyze", lambda text: (_ for _ in ()).throw(RuntimeError("boom /secret/path.py line 42")))
     r = TestClient(api.app, raise_server_exceptions=False).post("/api/analyze", json={"text": "hello"})

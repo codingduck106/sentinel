@@ -32,26 +32,38 @@ function Check() {
   );
 }
 
-export function Results({ r, ai = null, onReset }: { r: AnalyzeResult; ai?: ContextualState | null; onReset: () => void }) {
+export function Results({ r, ai = null, onReset, scroll = true, showVerdict = true }: { r: AnalyzeResult; ai?: ContextualState | null; onReset: () => void; scroll?: boolean; showVerdict?: boolean }) {
   const ref = useRef<HTMLElement>(null);
   useEffect(() => {
+    // On the homepage the terminal transcript announces the result first; the full breakdown waits below it.
+    if (!scroll) return;
     ref.current?.focus();
     ref.current?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
-  }, [r]);
+  }, [r, scroll]);
 
   const detected = r.tactics.filter((t) => t.detected).sort((a, b) => b.score - a.score);
   const risky = r.risk_level !== "low";
 
   return (
-    <section ref={ref} tabIndex={-1} className={`results lvl-${r.risk_level}`} aria-live="polite" aria-labelledby="verdict-h" data-testid="results">
-      <div className="verdict">
-        <span className="verdict-mark" aria-hidden />
-        <div>
-          <h2 id="verdict-h">{r.verdict}</h2>
-          <p>{SUBLINE[r.risk_level](detected.length)}</p>
-          <p className="status"><StatusIcon level={r.risk_level} />{LEVEL_NAME[r.risk_level]} risk</p>
+    <section ref={ref} id="result" tabIndex={-1} className={`results lvl-${r.risk_level}`} aria-live="polite" aria-labelledby="verdict-h" data-testid="results">
+      {showVerdict ? (
+        <div className="verdict">
+          <div>
+            <h2 id="verdict-h">{r.verdict}</h2>
+            <p>{SUBLINE[r.risk_level](detected.length)}</p>
+            <p className="status"><StatusIcon level={r.risk_level} />{LEVEL_NAME[r.risk_level]} risk</p>
+          </div>
         </div>
-      </div>
+      ) : (
+        // Homepage: the terminal transcript already printed the verdict; this is the breakdown under it.
+        <div className="verdict">
+          <div>
+            <h2 id="verdict-h" className="breakdown-h">Full breakdown</h2>
+            <p>{SUBLINE[r.risk_level](detected.length)}</p>
+            <p className="status"><StatusIcon level={r.risk_level} />{LEVEL_NAME[r.risk_level]} risk</p>
+          </div>
+        </div>
+      )}
 
       <RiskAssessment r={r} />
 
@@ -87,14 +99,14 @@ export function Results({ r, ai = null, onReset }: { r: AnalyzeResult; ai?: Cont
       </section>
 
       <p className="limits">
-        Veritas analyzes message content, not the identity of its sender. A legitimate message can contain suspicious wording,
+        Sentinel analyzes message content, not the identity of its sender. A legitimate message can contain suspicious wording,
         and a sophisticated scam may contain no obvious warning signs.
       </p>
 
       <details className="how">
         <summary>How this was decided</summary>
         <p>
-          A machine-learning model compares the wording to thousands of known spam texts, and a separate set of rules looks for
+          A machine-learning model compares the wording with patterns it learned from 3,610 real UK text messages from 2011 (450 of them spam), and a separate set of rules looks for
           pressure tactics. The model learned from UK text messages and can miss newer scams, so the tactics are checked on their own.
           It can be wrong. {r.advice}
         </p>

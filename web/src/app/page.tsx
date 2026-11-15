@@ -1,27 +1,6 @@
-import Link from "next/link";
 import { TopBar } from "@/components/TopBar";
+import { TerminalCheck } from "@/components/TerminalCheck";
 import type { TacticId } from "@/lib/api";
-
-type Part = string | { t: TacticId; s: string };
-
-// Hero demo: a real-style phishing text, annotated exactly as the analyzer would.
-const DEMO: Part[] = [
-  { t: "authority_impersonation", s: "HSBC" }, ": ",
-  { t: "authority_impersonation", s: "We have detected" }, " ",
-  { t: "fear", s: "unusual activity on your account" }, ". It ",
-  { t: "fear", s: "will be suspended" }, " ",
-  { t: "urgency", s: "within 24 hours" }, " unless you verify ",
-  { t: "urgency", s: "immediately" }, " at hsbc-secure-check.com",
-];
-
-// Stagger index for the draw animation, computed once (render stays pure).
-const ORDER = new Map(DEMO.filter((p) => typeof p !== "string").map((p, i) => [p, i]));
-
-const NOTES: { t: TacticId; label: string }[] = [
-  { t: "authority_impersonation", label: "Pretending to be official" },
-  { t: "fear", label: "Fear" },
-  { t: "urgency", label: "Urgency" },
-];
 
 const TRICKS: { t: TacticId; name: string; what: string; example: string }[] = [
   { t: "urgency", name: "Urgency", what: "It pushes you to act right now, so you don’t stop to think.", example: "Act within 24 hours or lose access" },
@@ -35,64 +14,31 @@ export default function Home() {
     <div className="frame">
       <TopBar />
       <main>
-        <section className="hero">
-          <div>
-            <h1>Got a text that feels off?</h1>
-            <p className="hero-sub">
-              Paste it into Veritas. We&rsquo;ll show you the exact words trying to rush, scare or bribe you, and what to do next.
-            </p>
-            <div className="hero-actions">
-              <Link href="/check" className="btn">Check a message</Link>
-              <a href="#how" className="link">See how it works</a>
-            </div>
-          </div>
-
-          <div className="draw" aria-label="Example: a fake HSBC text with its scam tactics highlighted">
-            <div className="hero-demo">
-              <div className="msg">
-                <p className="bubble-from">HSBC</p>
-                <p className="bubble">
-                  {DEMO.map((p, k) =>
-                    typeof p === "string" ? (
-                      <span key={k}>{p}</span>
-                    ) : (
-                      <mark key={k} className={`hl hl-${p.t}`} style={{ color: "inherit", ["--i" as string]: ORDER.get(p) }}>{p.s}</mark>
-                    ),
-                  )}
-                </p>
-              </div>
-              <div className="notes note" aria-hidden style={{ ["--n" as string]: ORDER.size }}>
-                {NOTES.map((n) => (
-                  <div key={n.t} className={`note-row c-${n.t}`}>
-                    <span className="note-leader" />
-                    <span className="dot" />
-                    <span>{n.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="legend note" style={{ ["--n" as string]: 6 }}>
-              {NOTES.map((n) => <span key={n.t} className={`c-${n.t}`}><span className="dot" />{n.label}</span>)}
-            </div>
-          </div>
+        <section className="hero" aria-labelledby="hero-h">
+          <h1 id="hero-h">Scam text checker.</h1>
+          <p className="hero-sub">
+            Paste a text you&rsquo;re not sure about. Sentinel flags the pressure words and rates the risk.
+          </p>
+          <TerminalCheck />
         </section>
 
         <section className="section" id="how" aria-labelledby="tricks-h">
           <h2 id="tricks-h">Four tricks scam texts use</h2>
-          <div className="tricks">
+          <dl className="tricks">
             {TRICKS.map((x) => (
-              <div key={x.t} className={`card c-${x.t}`}>
-                <span className="swatch" aria-hidden />
-                <h3>{x.name}</h3>
-                <p className="soft">{x.what}</p>
-                <p className="example"><mark className={`hl hl-${x.t}`} style={{ color: "inherit" }}>{x.example}</mark></p>
+              <div key={x.t} className={`trick c-${x.t}`}>
+                <dt><span className="dot" aria-hidden />{x.name}</dt>
+                <dd>
+                  <p className="soft">{x.what}</p>
+                  <p className="example"><mark className={`hl hl-${x.t}`} style={{ color: "inherit" }}>{x.example}</mark></p>
+                </dd>
               </div>
             ))}
-          </div>
+          </dl>
         </section>
 
         <section className="section" aria-labelledby="decide-h">
-          <h2 id="decide-h">How Veritas decides</h2>
+          <h2 id="decide-h">How Sentinel decides</h2>
           <p className="soft flow-lede">Two separate checks read your message. Neither decides on its own.</p>
           <figure className="flow" aria-label="Your message goes through two checks, a spam pattern check and a pressure tactic check. A risk decision combines them into a verdict, the highlighted words, and what to do.">
             <div className="flow-node flow-start">Your message</div>
@@ -100,7 +46,7 @@ export default function Home() {
             <div className="flow-pair">
               <div className="flow-node">
                 <h3>Spam pattern check</h3>
-                <p className="soft">A machine-learning model compares the wording with thousands of known spam texts.</p>
+                <p className="soft">A machine-learning model compares the wording with patterns learned from 3,610 real UK text messages from 2011, 450 of them spam.</p>
                 <p className="flow-out">Gives a spam score</p>
               </div>
               <div className="flow-node">
@@ -123,8 +69,8 @@ export default function Home() {
           </figure>
         </section>
 
-        <section className="section" aria-labelledby="limits-h">
-          <h2 id="limits-h">What Veritas can and can&rsquo;t tell you</h2>
+        <section className="section" id="limits" aria-labelledby="limits-h">
+          <h2 id="limits-h">What Sentinel can and can&rsquo;t tell you</h2>
           <div className="cando">
             <div>
               <h3>What it can do</h3>

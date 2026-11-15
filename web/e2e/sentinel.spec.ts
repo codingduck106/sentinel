@@ -1,15 +1,34 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("landing page", () => {
-  test("shows the hero, the annotated demo and links to the checker", async ({ page }) => {
+  test("says it is a scam text checker and shows example output before any check", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { level: 1, name: "Got a text that feels off?" })).toBeVisible();
-    await expect(page.locator(".hero mark.hl")).toHaveCount(6);
+    await expect(page).toHaveTitle(/Sentinel/);
+    await expect(page.getByRole("heading", { level: 1, name: "Scam text checker." })).toBeVisible();
+    await expect(page.getByLabel("Paste the text you received")).toBeVisible();
+    await expect(page.locator(".out-sample .ln-verdict")).toContainText("This looks like a scam");
     await expect(page.getByRole("heading", { name: "Four tricks scam texts use" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "How Veritas decides" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "How Sentinel decides" })).toBeVisible();
     await expect(page.locator(".flow .flow-node h3")).toHaveText(["Spam pattern check", "Pressure tactic check", "Risk decision"]);
-    await page.getByRole("main").getByRole("link", { name: "Check a message" }).click();
-    await expect(page).toHaveURL(/\/check$/);
+  });
+
+  test("an empty press on the homepage explains what to do", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: "Check this message" }).click();
+    await expect(page.locator(".term-out p.error[role=alert]")).toHaveText("Paste the text you received first, then press Check.");
+    await expect(page.getByLabel("Paste the text you received")).toBeFocused();
+  });
+
+  test("checks a message right on the homepage: transcript, verdict, then the full breakdown", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: "Bank alert" }).click();
+    await page.getByRole("button", { name: "Check this message" }).click();
+    const out = page.locator(".term-out");
+    await expect(out.locator(".ln-flag")).toHaveCount(3);
+    await expect(out.locator(".ln-verdict")).toContainText("This looks like a scam");
+    await expect(out.locator(".ln-verdict")).toContainText("High risk");
+    // the transcript carries the verdict; the breakdown below doesn't repeat it as a second headline
+    await expect(page.getByTestId("results").getByRole("heading", { name: "Full breakdown" })).toBeVisible();
   });
 
   test("has no horizontal scroll", async ({ page }) => {
@@ -20,12 +39,15 @@ test.describe("landing page", () => {
 });
 
 test.describe("check a message", () => {
-  test("submit is disabled until text is entered", async ({ page }) => {
+  test("pressing Check with nothing pasted explains what to do and focuses the field", async ({ page }) => {
     await page.goto("/check");
     const submit = page.getByRole("button", { name: "Check this message" });
-    await expect(submit).toBeDisabled();
+    await expect(submit).toBeEnabled();
     await page.getByLabel("Message to check").fill("   ");
-    await expect(submit).toBeDisabled();
+    await submit.click();
+    await expect(page.locator("p.error[role=alert]")).toHaveText("Paste the text you received first, then press Check.");
+    await expect(page.getByLabel("Message to check")).toBeFocused();
+    await expect(page.getByTestId("results")).toHaveCount(0);
   });
 
   test("scam message: verdict, risk scale, highlights and explanation cards", async ({ page }) => {
@@ -51,7 +73,7 @@ test.describe("check a message", () => {
     }
     await expect(results.getByRole("heading", { name: "What to do now" })).toBeVisible();
     // the limitation note is always visible, not hidden in a disclosure
-    await expect(results.getByText("Veritas analyzes message content, not the identity of its sender.", { exact: false })).toBeVisible();
+    await expect(results.getByText("Sentinel analyzes message content, not the identity of its sender.", { exact: false })).toBeVisible();
   });
 
   test("highlight colours are the tactic colours, not the browser's default <mark> yellow", async ({ page }) => {
@@ -95,7 +117,7 @@ test.describe("check a message", () => {
     await page.getByRole("button", { name: "Bank alert" }).click();
     await page.getByRole("button", { name: "Check this message" }).click();
     // (Next.js also renders an empty role="alert" route announcer, so scope to our error box)
-    await expect(page.locator("p.error[role=alert]")).toHaveText("Veritas couldn't check this message right now. Try again in a moment.");
+    await expect(page.locator("p.error[role=alert]")).toHaveText("Sentinel couldn't check this message right now. Try again in a moment.");
   });
 
   test("user text is rendered as text, never as HTML", async ({ page }) => {

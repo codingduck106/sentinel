@@ -1,5 +1,5 @@
 [project]
-name = "veritas"
+name = "sentinel"
 version = "0.3.0"
 requires-python = ">=3.12"
 # Runtime dependencies only (these ship in the Vercel Python function).
@@ -14,7 +14,7 @@ dependencies = [
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["veritas*"]
+include = ["sentinel*", "veritas*"]  # veritas: unpickling alias for the saved model
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

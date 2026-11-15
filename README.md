@@ -1,8 +1,8 @@
-# Veritas
+# Sentinel
 
-**Live:** https://veritas-nine-gamma.vercel.app
+**Live:** https://sentinel-scam-checker.vercel.app
 
-Paste a suspicious text message. Veritas tells you, in plain language, whether it looks like a scam, highlights the exact words trying to rush, scare or bribe you, and says what to do next.
+Paste a suspicious text message. Sentinel tells you, in plain language, whether it looks like a scam, highlights the exact words trying to rush, scare or bribe you, and says what to do next.
 
 ## How it works: a hybrid, not just a spam classifier
 
@@ -41,7 +41,7 @@ Paste a suspicious text message. Veritas tells you, in plain language, whether i
 
 - **Why two paths:** the classifier is strong on the spam it was trained on but weak on modern scams. The tactic detector carries over to new data better and explains itself. See the [study](docs/generalization_study.md).
 - **Code:**
-  - `src/veritas/preprocess.py`: preprocessing
+  - `src/sentinel/preprocess.py`: preprocessing
   - `classifier.py`: classifier
   - `tactics.py`: tactic detector
   - `explain.py`: risk engine and explanation text
@@ -54,7 +54,7 @@ Paste a suspicious text message. Veritas tells you, in plain language, whether i
 ```bash
 python3 -m venv .venv && . .venv/bin/activate
 pip install -e . -r requirements-dev.txt
-uvicorn veritas.api:app --port 8000 --app-dir src     # API (set VERITAS_ENABLE_DOCS=1 for /api/docs)
+uvicorn sentinel.api:app --port 8000 --app-dir src     # API (set SENTINEL_ENABLE_DOCS=1 for /api/docs)
 cd web && npm install && npm run dev                  # http://localhost:3000 (proxies /api to :8000)
 ```
 
@@ -103,15 +103,15 @@ Configuration (server-side environment variables; the key never reaches the brow
 
 | variable | default | |
 |---|---|---|
-| `VERITAS_LLM_ENABLED` | off | `1` to enable (also requires the key) |
+| `SENTINEL_LLM_ENABLED` | off | `1` to enable (also requires the key) |
 | `ANTHROPIC_API_KEY` | none | workspace-scoped API key |
 | `ANTHROPIC_WORKSPACE_ID` | none | only for keys that need the `anthropic-workspace-id` header |
-| `VERITAS_LLM_MODEL` | `claude-haiku-5-5` | |
-| `VERITAS_LLM_EFFORT` | `low` | thinking is off |
-| `VERITAS_LLM_TIMEOUT_S` | `8` | |
-| `VERITAS_LLM_DAILY_BUDGET_USD` | `1.00` | per instance |
+| `SENTINEL_LLM_MODEL` | `claude-haiku-5-5` | |
+| `SENTINEL_LLM_EFFORT` | `low` | thinking is off |
+| `SENTINEL_LLM_TIMEOUT_S` | `8` | |
+| `SENTINEL_LLM_DAILY_BUDGET_USD` | `1.00` | per instance |
 
-Local: put the key in `.env.anthropic` (git- and Vercel-ignored), then `set -a; . ./.env.anthropic; set +a; VERITAS_LLM_ENABLED=1 uvicorn veritas.api:app --app-dir src`.
+Local: put the key in `.env.anthropic` (git- and Vercel-ignored), then `set -a; . ./.env.anthropic; set +a; SENTINEL_LLM_ENABLED=1 uvicorn sentinel.api:app --app-dir src`.
 
 ## Tests
 ```bash
@@ -127,7 +127,7 @@ All of the following were verified against the live production deployment on 202
 - **Errors reveal nothing:**
   - **Generic bodies:** every error is a fixed `{"error": "..."}` (422, 404, 405, 413, 500). FastAPI's default 422, which echoed the user's text and pydantic internals, is replaced.
   - **No stack traces:** nothing internal is ever returned.
-  - **Docs off:** `/api/docs` and `/api/openapi.json` return 404 unless `VERITAS_ENABLE_DOCS=1`.
+  - **Docs off:** `/api/docs` and `/api/openapi.json` return 404 unless `SENTINEL_ENABLE_DOCS=1`.
 - **No message logging:**
   - **Code:** the served code has no logging or print calls.
   - **Canary test:** a unique string was sent to production, then the runtime logs were searched; 0 hits.
