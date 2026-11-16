@@ -11,6 +11,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from sentinel.classifier import DEFAULT_MODEL, SpamClassifier
+from sentinel.marketing import is_likely_marketing
 from sentinel.tactics import detect_dict
 
 
@@ -23,13 +24,15 @@ def analyze(text: str, model: SpamClassifier | None = None) -> dict:
     clf = model or _model()
     p = float(clf.proba([text])[0])
     tactics = detect_dict(text)
+    tactics_detected = [k for k, v in tactics.items() if v["detected"]]
     return {
         "text": text,
         "scam_probability": round(p, 4),          # P(spam) from TF-IDF + LR
         "label": "spam" if p >= clf.threshold else "legitimate",
         "threshold": round(clf.threshold, 4),
         "tactics": tactics,                        # independent rule-based component
-        "tactics_detected": [k for k, v in tactics.items() if v["detected"]],
+        "tactics_detected": tactics_detected,
+        "marketing_message": is_likely_marketing(text, tactics_detected),
     }
 
 

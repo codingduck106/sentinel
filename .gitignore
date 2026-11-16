@@ -13,3 +13,6 @@ web/playwright-report/
 
 # build metadata
 *.egg-info/
+.venv-train/
+models/neural/
+data/neural/

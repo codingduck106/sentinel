@@ -246,6 +246,7 @@ test.describe("AI explanation (opt-in)", () => {
       risk_score: 0.1,
       scam_probability: 0.1,
       classifier_label: "legitimate",
+      marketing_message: false,
       tactics: [],
       tactics_detected: [],
       advice: "Check with the person another way.",

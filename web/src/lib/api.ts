@@ -19,6 +19,7 @@ export interface AnalyzeResult {
   risk_score: number;
   scam_probability: number;
   classifier_label: "spam" | "legitimate";
+  marketing_message: boolean;
   tactics: Tactic[];
   tactics_detected: TacticId[];
   advice: string;

@@ -113,6 +113,7 @@ class AnalyzeResponse(BaseModel):
     classifier_label: str
     tactics: list[Tactic]
     tactics_detected: list[str]
+    marketing_message: bool
     advice: str
 
 
@@ -159,15 +160,24 @@ def analyze_endpoint(req: AnalyzeRequest) -> AnalyzeResponse:
         )
         for k, v in r["tactics"].items()
     ]
-    level = risk_level(r["scam_probability"], r["label"] == "spam", len(r["tactics_detected"]))
+    level = risk_level(
+        r["scam_probability"], r["label"] == "spam", len(r["tactics_detected"]),
+        is_marketing=r["marketing_message"],
+    )
     return AnalyzeResponse(
         text=req.text,
-        verdict=VERDICTS[level],
+        verdict="This looks like promotional marketing"
+        if r["marketing_message"] and level == "low"
+        else VERDICTS[level],
         risk_level=level,
-        risk_score=risk_score(r["scam_probability"], [t.score for t in tactics if t.detected]),
+        risk_score=risk_score(
+            r["scam_probability"], [t.score for t in tactics if t.detected],
+            is_marketing=r["marketing_message"],
+        ),
         scam_probability=r["scam_probability"],
         classifier_label=r["label"],
         tactics=tactics,
         tactics_detected=r["tactics_detected"],
+        marketing_message=r["marketing_message"],
         advice=GENERAL_ADVICE,
     )

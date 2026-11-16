@@ -45,6 +45,28 @@ def test_normal_message(client):
     assert body["risk_level"] == "low" and body["tactics_detected"] == []
 
 
+@pytest.mark.parametrize("text", [
+    "Xfinity: Samsung Galaxy S26+ has landed in our stores. Learn how to get yours on us today: https://xfinity.com/learn/deals/mobile/samsung Txt HELP for help or STOP to cancel Msg&DataRateMayApply",
+    "Get iPhone 18 Pro on us or up to $1,200 off iPhone 18 Pro Max w/ qualifying trade-in — hurry, these deals won't last. Shop now https://t.xfin.me/2vtlwb Txt HELP for help or STOP to cancel Msg&DataRateMayApply",
+    "Xfinity: Get a premium 5G phone on us with qualifying trade-in and new Premium Unlimited line. https://xfmo.co/premium5g Txt HELP for help or STOP to cancel Msg&DataRateMayApply",
+    "Dave&Buster's: Make it a Sunday Funday! 1/2 Price Games are TOMORROW on 100+ games at D&B. Bring the crew. https://a.sfmsg.co/Y3GirvISG TXT Stop to End",
+])
+def test_compliant_promotions_are_not_presented_as_scams(client, text):
+    body = client.post("/api/analyze", json={"text": text}).json()
+    assert body["marketing_message"] is True
+    assert body["risk_level"] == "low"
+    assert body["verdict"] == "This looks like promotional marketing"
+    assert body["classifier_label"] == "spam"
+
+
+def test_opt_out_does_not_neutralize_scam_tactics(client):
+    body = client.post("/api/analyze", json={
+        "text": "URGENT: your account will be suspended. Verify now or lose access. Txt STOP to cancel"
+    }).json()
+    assert body["marketing_message"] is False
+    assert body["risk_level"] == "high"
+
+
 @pytest.mark.parametrize("payload", [{"text": "   "}, {"text": "x" * 2001}, {}, {"text": 5}])
 def test_rejects_bad_input(client, payload):
     assert client.post("/api/analyze", json=payload).status_code == 422

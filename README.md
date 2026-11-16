@@ -82,6 +82,7 @@ Full write-up with methods and limitations: [`docs/generalization_study.md`](doc
 
 - **Risk rule — two signals for High:** (classifier says spam AND ≥ 1 pressure tactic) OR ≥ 2 tactics. The classifier alone gives Medium at most, because out of domain it is confidently wrong on legitimate delivery and bank texts. This cut legitimate messages rated High from 12–37% to 1–3% on modern Indian SMS. The cost: fewer scams reach High (2011 validation 87.5% → 41%, Indian holdout 74% → 48%), though none drop to Low. Details: [`docs/false_positives.md`](docs/false_positives.md).
 - **⚠️ Remaining weakness:** 28–57% of legitimate modern transactional SMS still get **Medium** ("This could be a scam") from the classifier alone. The fix is retraining on modern data.
+- **Promotional SMS context:** messages with commercial offer language and carrier opt-out/compliance wording are shown as **promotional marketing** at Low risk when they have no fear, impersonation or prize/refund lure. The original classifier probability and label remain visible and unchanged; this is a conservative presentation rule, not a retrained model.
 
 ## Optional AI explanation (`/api/contextual`)
 An **opt-in**, **informational-only** third layer. Ticking "Also get an AI explanation" sends the message to **Claude Haiku 5.5** (Anthropic), which explains implicit manipulation and requests for sensitive information. The classifier, the tactic rules and the risk rating are untouched: the endpoint returns no risk fields, and the UI labels the card "doesn't change the risk rating above".

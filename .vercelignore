@@ -13,3 +13,5 @@ web/playwright-report
 .agent
 .gemini
 .impeccable
+.venv-train
+models/neural

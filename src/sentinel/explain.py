@@ -47,7 +47,9 @@ VERDICTS = {
 GENERAL_ADVICE = "If in doubt, contact the company using a number you already trust."
 
 
-def risk_level(scam_probability: float, is_spam: bool, n_tactics: int) -> str:
+def risk_level(scam_probability: float, is_spam: bool, n_tactics: int, is_marketing: bool = False) -> str:
+    if is_marketing and n_tactics <= 1:
+        return "low"
     if (is_spam and n_tactics >= 1) or n_tactics >= 2:
         return "high"
     if is_spam or n_tactics == 1 or scam_probability >= MEDIUM_PROBABILITY:
@@ -55,7 +57,7 @@ def risk_level(scam_probability: float, is_spam: bool, n_tactics: int) -> str:
     return "low"
 
 
-def risk_score(scam_probability: float, tactic_scores: list[float]) -> float:
+def risk_score(scam_probability: float, tactic_scores: list[float], is_marketing: bool = False) -> float:
     """0–1 position on the UI's risk scale. Display only — the level comes from risk_level().
 
     Pass only DETECTED tactics' scores, or sub-threshold cues can push the marker toward a
@@ -63,4 +65,5 @@ def risk_score(scam_probability: float, tactic_scores: list[float]) -> float:
     """
     strongest = sorted(tactic_scores, reverse=True)
     tactic_part = min(1.0, sum(strongest[:2]) / 1.5)
-    return round(max(scam_probability, tactic_part), 3)
+    classifier_part = min(scam_probability, 0.2) if is_marketing else scam_probability
+    return round(max(classifier_part, tactic_part), 3)

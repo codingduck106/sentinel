@@ -29,7 +29,7 @@ def test_placeholder_does_not_shift_prediction(tmp_path: Path):
 @pytest.mark.skipif(not DEFAULT_MODEL.exists(), reason="run src/train.py first")
 def test_analyze_output_shape():
     r = analyze("URGENT! You have won a £2000 prize. Call 09061701461 to claim")
-    assert set(r) >= {"scam_probability", "label", "tactics", "tactics_detected"}
+    assert set(r) >= {"scam_probability", "label", "tactics", "tactics_detected", "marketing_message"}
     assert r["label"] == "spam" and r["scam_probability"] > 0.9
     assert {"urgency", "reward"} <= set(r["tactics_detected"])
     assert set(r["tactics"]) == {"urgency", "fear", "authority_impersonation", "reward"}

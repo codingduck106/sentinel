@@ -10,7 +10,9 @@ import { RiskAssessment } from "./RiskAssessment";
 const SUBLINE = {
   high: (n: number) => `High risk. It uses ${words(n)} pressure tactic${n > 1 ? "s" : ""}${n === 1 ? " and its wording matches common spam texts" : ""}.`,
   medium: (n: number) => `Medium risk. ${n ? "It uses a pressure tactic that scam texts often rely on" : "The wording looks like spam texts we\u2019ve seen, but we found no pressure tactics"}. Check before you act.`,
-  low: () => "Low risk. We didn’t find pressure tactics or common spam patterns.",
+  low: (marketing: boolean) => marketing
+    ? "Low risk. This has the opt-out and offer language of a promotional message, not a scam warning."
+    : "Low risk. We didn’t find pressure tactics or common spam patterns.",
 };
 const words = (n: number) => ["no", "one", "two", "three", "four"][n] ?? String(n);
 
@@ -50,7 +52,7 @@ export function Results({ r, ai = null, onReset, scroll = true, showVerdict = tr
         <div className="verdict">
           <div>
             <h2 id="verdict-h">{r.verdict}</h2>
-            <p>{SUBLINE[r.risk_level](detected.length)}</p>
+            <p>{r.risk_level === "low" ? SUBLINE.low(r.marketing_message) : SUBLINE[r.risk_level](detected.length)}</p>
             <p className="status"><StatusIcon level={r.risk_level} />{LEVEL_NAME[r.risk_level]} risk</p>
           </div>
         </div>
@@ -59,7 +61,7 @@ export function Results({ r, ai = null, onReset, scroll = true, showVerdict = tr
         <div className="verdict">
           <div>
             <h2 id="verdict-h" className="breakdown-h">Full breakdown</h2>
-            <p>{SUBLINE[r.risk_level](detected.length)}</p>
+            <p>{r.risk_level === "low" ? SUBLINE.low(r.marketing_message) : SUBLINE[r.risk_level](detected.length)}</p>
             <p className="status"><StatusIcon level={r.risk_level} />{LEVEL_NAME[r.risk_level]} risk</p>
           </div>
         </div>
